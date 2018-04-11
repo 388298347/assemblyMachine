@@ -367,6 +367,24 @@ function machine() {
         return this.getAddr(addr, this.memoryLabels);
     }
     
+    this.getOtherMemory = function(usedLabels) {
+        var allMemory = [];
+        for (var i = 0; i < this.alu.memorySize; i ++) {
+            allMemory.push(this.alu.getMemory(i));
+        }
+        var otherMemory = [];
+        for (var i = 0; i < allMemory.length; i ++) {
+            var isUsedMemory = false;
+            for (var j = 0; j < usedLabels.length && !isUsedMemory; j ++) {
+                if (i == usedLabels[j]) {
+                    isUsedMemory = true;
+                    //usedLabels.splice(j, 1); //remove pair from list
+                } else if (j = usedLabels.length
+            }
+        }
+        return otherMemory;
+    }
+    
     this.getProgramAddress = function(addr) {
         return this.getAddr(addr, this.programLabels);
     }
@@ -402,7 +420,9 @@ function machine() {
         return labels;
     }
     this.getMemoryStatus = function() {
-        return Object.keys(this.memoryLabels).map(key => key + ":\t" + this.alu.getMemory(m.memoryLabels[key]))
+        var temp = this.memoryLabels;
+        temp = temp.concat(this.getOtherMemory(temp));
+        return Object.keys(temp).map(key => key + ":\t" + this.alu.getMemory(m.memoryLabels[key]))
     }
     
     this.getProgramStatus = function() {
